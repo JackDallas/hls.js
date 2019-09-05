@@ -705,12 +705,17 @@ class TSDemuxer {
               for (i = 16; i < payloadSize; i++) {
                 userDataPayloadBytes.push(expGolombDecoder.readUByte());
               }
+              // Prevent 'Uncaught RangeError: Maximum call stack size exceeded' when running String.fromCharCode.apply(null, userDataPayloadBytes) on very large arrays
+
+              let u8 = new Uint8Array(userDataPayloadBytes);
+              let decoder = new TextDecoder('utf8');
+              let userDataPayloadBytesString = decoder.decode(u8);
 
               this._insertSampleInOrder(this._txtTrack.samples, {
                 pts: pes.pts,
                 payloadType: payloadType,
                 uuid: uuidStrArray.join(''),
-                userData: String.fromCharCode.apply(null, userDataPayloadBytes),
+                userData: userDataPayloadBytesString,
                 userDataBytes: userDataPayloadBytes
               });
             }
