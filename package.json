@@ -1,5 +1,5 @@
 {
-  "name": "hls.js",
+  "name": "hls.js-rangepatch",
   "license": "Apache-2.0",
   "version": "v0.12.5-beta.2",
   "description": "JavaScript HLS client using MediaSourceExtension",
